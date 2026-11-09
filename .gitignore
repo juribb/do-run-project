@@ -1,0 +1,57 @@
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+# dependencies
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
+
+# local env files (.env.example은 값이 빈 템플릿이라 올린다)
+.env*.local
+.env
+.env.*
+!.env.example
+
+# typescript
+*.tsbuildinfo
+
+example
+
+# generated native folders
+/ios
+/android
+
+# Supabase CLI
+supabase/.temp
+supabase/.branches
+
+# 비밀·개인 파일 (구글 OAuth 클라이언트 비밀키 등)
+client_secret*.json
+.claude/settings.local.json
+
+# 발표 자료 제작용 작업 폴더(캡쳐·영상·pptx·파이썬 venv, 217MB)
+.slide-assets/

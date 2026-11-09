@@ -1,0 +1,74 @@
+{
+  "v": 4,
+  "attachments": {},
+  "createdOnFiles": {
+    "at": "2026-09-17T00:00:00Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "faces": {
+    "noto-sans-kr": {
+      "family": "Noto Sans KR",
+      "href": "https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap"
+    }
+  },
+  "order": [
+    "cover",
+    "overview",
+    "problem-context",
+    "problem-insight",
+    "problem-reframe",
+    "market-signals",
+    "market-targeting",
+    "target-journey",
+    "competitors",
+    "proposal-pitch",
+    "proposal-flow",
+    "proposal-structure",
+    "business-model",
+    "metrics",
+    "roadmap",
+    "implementation",
+    "retrospective",
+    "closing"
+  ],
+  "sections": {
+    "s1": {
+      "description": "표지와 발표 개요",
+      "start": "cover"
+    },
+    "s2": {
+      "description": "문제 정의: 초기 가설부터 재정의까지",
+      "start": "problem-context"
+    },
+    "s3": {
+      "description": "시장 조사와 타깃 사용자 선정",
+      "start": "market-signals"
+    },
+    "s4": {
+      "description": "사용자 여정",
+      "start": "target-journey"
+    },
+    "s5": {
+      "description": "기존 대안·벤치마킹",
+      "start": "competitors"
+    },
+    "s6": {
+      "description": "서비스 제안과 구조",
+      "start": "proposal-pitch"
+    },
+    "s7": {
+      "description": "비즈니스 모델과 초기 목표 지표",
+      "start": "business-model"
+    },
+    "s8": {
+      "description": "로드맵, 구현 결과, 회고",
+      "start": "roadmap"
+    },
+    "s9": {
+      "description": "마무리",
+      "start": "closing"
+    }
+  },
+  "title": "두런 (Do Run) 최종 발표 자료"
+}

@@ -1,0 +1,7 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/course-detail/:id", "destination": "/course-detail/[candidateId].html" },
+    { "source": "/records/:id", "destination": "/records/[courseId].html" }
+  ]
+}
