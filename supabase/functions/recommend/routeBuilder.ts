@@ -383,14 +383,27 @@ const SQUARE_ORIENTATIONS_DEG = [0, 45];
  * 통과"시키지 않는다.
  */
 async function tryRectangularLoop(origin: LatLng, targetDistanceM: number, apiKeys: string[]): Promise<GraphHopperRoute[]> {
-  const side = targetDistanceM * SQUARE_SIDE_FACTOR;
-  const attempts = SQUARE_ORIENTATIONS_DEG.map(async (bearingDeg) => {
+  const buildSquare = (bearingDeg: number, side: number) => {
     const c2 = destinationPoint(origin.lat, origin.lng, bearingDeg, side);
     const c3 = destinationPoint(c2.lat, c2.lng, bearingDeg + 90, side);
     const c4 = destinationPoint(c3.lat, c3.lng, bearingDeg + 180, side);
-    const route = await fetchViaPointRoute([origin, c2, c3, c4, origin], apiKeys);
+    return fetchViaPointRoute([origin, c2, c3, c4, origin], apiKeys);
+  };
+
+  const attempts = SQUARE_ORIENTATIONS_DEG.map(async (bearingDeg) => {
+    const side = targetDistanceM * SQUARE_SIDE_FACTOR;
+    const route = await buildSquare(bearingDeg, side);
     if (!route) return null;
-    return isWithinTolerance(route.distanceM, targetDistanceM) && passesRoadQuality(route) ? route : null;
+    if (isWithinTolerance(route.distanceM, targetDistanceM)) return passesRoadQuality(route) ? route : null;
+
+    // 실제 도로는 사각형 둘레보다 구불해서 거리가 목표에서 벗어나기 쉽다 — 예전엔 그대로 버렸는데
+    // (2026-11-09, 실제 후보를 그려보니 가장 둥글고 깨끗한 코스가 이 방식이라 살릴 가치가 있다),
+    // 실측 비율만큼 한 변을 보정해서 한 번만 더 시도한다(tryGroupLoop와 같은 방식). 보정 폭은
+    // 극단적으로 흐르지 않게 제한한다.
+    const scale = Math.min(1.5, Math.max(0.6, targetDistanceM / route.distanceM));
+    const retry = await buildSquare(bearingDeg, side * scale);
+    if (!retry) return null;
+    return isWithinTolerance(retry.distanceM, targetDistanceM) && passesRoadQuality(retry) ? retry : null;
   });
   const results = await Promise.all(attempts);
   return results.filter((r): r is GraphHopperRoute => r !== null);

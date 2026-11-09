@@ -59,10 +59,12 @@ const ORIGIN_ACCESS_WARNING_M = 150;
  */
 const MAX_LOOP_OVERLAP_RATIO = 0.2;
 /**
- * 정렬용 모양 벌점 가중치 — 급회전 개수(보통 3~15)와 같은 눈금에 얹는다. 겹침 10%p는 급회전
- * 2.5개, 자기 교차 1회는 급회전 4개, 둥글지 않은 정도(0~1)는 최대 5개만큼으로 친다.
+ * 정렬용 모양 벌점 가중치 — 급회전 개수와 같은 눈금에 얹는다. 실제 후보를 측정하니 급회전은
+ * 14~33개 범위라(격자 도로의 계단식 꺾임 포함), 처음 잡은 값(겹침 25·교차 4·둥근정도 5)으로는
+ * 급회전 차이에 묻혀서 모양이 정렬에 거의 영향을 못 줬다. 겹침 10%p는 급회전 10개, 자기 교차
+ * 1회는 6개, 둥글지 않은 정도(0~1)는 최대 25개만큼으로 친다. 이것도 잠정치다.
  */
-const SHAPE_PENALTY = { overlap: 25, crossing: 4, nonCompact: 5 } as const;
+const SHAPE_PENALTY = { overlap: 100, crossing: 6, nonCompact: 25 } as const;
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',

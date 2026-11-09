@@ -161,6 +161,13 @@ const SPUR_TOLERANCE_M = 8;
 const SPUR_MIN_LENGTH_M = 30;
 const SPUR_MAX_LENGTH_M = 400;
 const SPUR_MAX_PASSES = 3;
+/**
+ * 가지를 잘라내서 줄어든 거리가 원본의 이 비율을 넘으면 "가지"가 아니라 코스 구조 자체가
+ * 되돌아오는 경로(사실상 왕복)라는 뜻이라 자르지 않고 원본을 쓴다 — 실제 저장된 후보
+ * 138개를 측정하니 반복 제거로 원본의 40%(2.4km)까지 깎이는 경우가 있었다(2026-11-09).
+ * 그런 경로는 겹침 비율 필터·벌점이 다룬다.
+ */
+const SPUR_MAX_REMOVED_RATIO = 0.2;
 
 export interface SpurRemoval {
   coordinates: Coord3[];
@@ -260,10 +267,8 @@ export function removeSpurs(coords: Coord3[]): SpurRemoval | null {
   }
 
   if (!changed) return null;
-  return {
-    coordinates: current,
-    distanceM: polylineLength(current, current[0][1]),
-    removedAscentM,
-    removedDescentM,
-  };
+  const originalM = polylineLength(coords, coords[0][1]);
+  const distanceM = polylineLength(current, current[0][1]);
+  if (originalM > 0 && (originalM - distanceM) / originalM > SPUR_MAX_REMOVED_RATIO) return null;
+  return { coordinates: current, distanceM, removedAscentM, removedDescentM };
 }
